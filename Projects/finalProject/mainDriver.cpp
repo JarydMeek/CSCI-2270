@@ -109,7 +109,7 @@ void binarySearchTreeTest(int dataSet[], double insertTime[], double searchTime[
 //Timer Function - Completes the timing operation for hash tables with chaining collision resolution.
 //runs insert 100x, then search 100x, averages those values and saves to array.
 //Jaryd
-void hashTableChaining(int dataSet[], double insertTime[], double searchTime[]) {
+void hashTableChaining(int dataSet[], double insertTime[], double searchTime[], int collisionTracker[]) {
     HashTableLinear hashTable(40009);
 
 
@@ -152,6 +152,12 @@ void hashTableChaining(int dataSet[], double insertTime[], double searchTime[]) 
         }
         searchTime[position] = searchSum/100;
 
+
+        //Tracks the number of collisions per 100 insertions
+        if (position > 0){
+            collisionTracker[position] = (hashTable.getNumOfCollision() - collisionTracker[position-1]);
+        }
+
         //Increment for Loop
         position++;
     }
@@ -160,7 +166,7 @@ void hashTableChaining(int dataSet[], double insertTime[], double searchTime[]) 
 //Timer Function - Completes the timing operation for hash tables with linear probing collision resolution
 //runs insert 100x, then search 100x, averages those values and saves to array.
 //Jaryd
-void hashTableLinear(int dataSet[], double insertTime[], double searchTime[]) {
+void hashTableLinear(int dataSet[], double insertTime[], double searchTime[], int collisionTracker[]) {
     HashTableLinear hashTable(40009);
     
     int position = 0;
@@ -202,17 +208,21 @@ void hashTableLinear(int dataSet[], double insertTime[], double searchTime[]) {
         }
         searchTime[position] = searchSum/100;
 
+        //Tracks the number of collisions per 100 insertions
+        if (position > 0){
+            collisionTracker[position] = (hashTable.getNumOfCollision() - collisionTracker[position-1]);
+        }
+
         //Increment for Loop
         position++;
     }
 
-    cout << "There were "<< hashTable.getNumOfCollision() <<" collisions resolved during the testing process." << endl;
 }
 
 //Timer Function - Completes the timing operation for hash tables with quadratic probing collision resolution
 //runs insert 100x, then search 100x, averages those values and saves to array.
 //Jaryd
-void hashTableQuadratic(int dataSet[], double insertTime[], double searchTime[]) {
+void hashTableQuadratic(int dataSet[], double insertTime[], double searchTime[], int collisionTracker[]) {
     HashTableQuadratic hashTable(40009);
     
     int position = 0;
@@ -254,11 +264,14 @@ void hashTableQuadratic(int dataSet[], double insertTime[], double searchTime[])
         }
         searchTime[position] = searchSum/100;
 
+        //Tracks the number of collisions per 100 insertions
+        if (position > 0){
+            collisionTracker[position] = (hashTable.getNumOfCollision() - collisionTracker[position-1]);
+        }
+
         //Increment for Loop
         position++;
     }
-
-    cout << "There were "<< hashTable.getNumOfCollision() <<" collisions resolved during the testing process." << endl;
 }
 
 int main() {
@@ -266,6 +279,7 @@ int main() {
     int dataSet[400000];
     double insertTime[400];
     double searchTime[400];
+    int collisionTracker[400];
 
     //While loop to allow the user to run other tests
     bool repeat = true;
@@ -307,6 +321,9 @@ int main() {
         cin >> dataStructureSelection;
         cout << "Running selected program." << endl;
 
+        //Bool to track if we are running a hash table to allow us to output Collisions
+        bool runHashTable = false;
+
         //Run the test for the selected data structure
         switch(dataStructureSelection) {
             case 1 : linkedListTest(dataSet, insertTime, searchTime);
@@ -315,13 +332,16 @@ int main() {
             case 2 : binarySearchTreeTest(dataSet, insertTime, searchTime);
                     fileNameOutput = fileNameOutput + "binarySearchTree-";//for output file naming
                     break;
-            case 3 : linkedListTest(dataSet, insertTime, searchTime);
+            case 3 : hashTableChaining(dataSet, insertTime, searchTime, collisionTracker);
+                    runHashTable = true;
                     fileNameOutput = fileNameOutput + "hashTableChaining-";//for output file naming
                     break;
-            case 4 : linkedListTest(dataSet, insertTime, searchTime);
+            case 4 : hashTableLinear(dataSet, insertTime, searchTime, collisionTracker);
+                    runHashTable = true;
                     fileNameOutput = fileNameOutput + "hashTableLinear-";//for output file naming
                     break;
-            case 5 : linkedListTest(dataSet, insertTime, searchTime);
+            case 5 : hashTableQuadratic(dataSet, insertTime, searchTime, collisionTracker);
+                    runHashTable = true;
                     fileNameOutput = fileNameOutput + "hashTableQuadratic-";//for output file naming
                     break;
         }
@@ -339,7 +359,20 @@ int main() {
         insertOutput.close();
         searchOutput.close();
         cout << "\nInsertion results saved to "<< fileNameOutput << "insertResults.csv" << endl;
-        cout << "Search results saved to "<< fileNameOutput << "searchResults.csv" << endl << endl;
+        cout << "Search results saved to "<< fileNameOutput << "searchResults.csv" << endl;
+
+        //Handles file output of collision tracker (IF APPLICABLE)
+        if(runHashTable) {
+            ofstream collisionOutput;
+            collisionOutput.open(fileNameOutput+"collisionResults.csv");
+            for (int i = 0; i < 400; i++) {
+                collisionOutput << collisionTracker[i] << ",";
+            }
+            collisionOutput.close();
+            cout << "Collision results saved to "<< fileNameOutput << "collisionResults.csv" << endl;
+        }
+        
+        cout << endl;
     
         //Prompt the user to see if they would like to re-run any tests
         cout << "Would you like to run another test? Enter 'Y' for yes, or 'N' for no\nMake a selection - ";
