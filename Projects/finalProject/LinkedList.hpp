@@ -1,7 +1,6 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
-using namespace std;
 
 //Node Struct that will be stored in the linked list object 
 struct Node

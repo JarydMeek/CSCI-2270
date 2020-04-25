@@ -2,7 +2,7 @@
 #include <chrono>
 #include <fstream>
 #include <sstream>
-#include "LinkedList.hpp"
+#include "../hashTableLinear.hpp"
 
 
 using namespace std;
@@ -25,11 +25,11 @@ bool readFile(string fileName, int storageArray[]) {
 
     int counter = 0;
     while(getline(splitString, singleNumber, ',')) { //splits the string by comma
-        counter++; //count the number of integers read
         storageArray[counter] = stoi(singleNumber); //add the current integer to the storage array
+        counter++; //count the number of integers read
     }
     if (counter != 0) { //if there was something in the file, give happy message
-        cout << fileName << " has been read succesfully" << endl; 
+        cout << endl << fileName << " has been read succesfully" << endl; 
         return true;
     } else { //if there was nothing in the file, give angry message
         cout << fileName << " can't be read" << endl;
@@ -46,12 +46,14 @@ int main(int argc, char const *argv[]) {
     double searchTime[400];
 
 
-    readFile("dataSetA.csv", dataSet);
+    readFile("../dataSets/dataSetA.csv", dataSet);
 
 
 
     //**PUT CONSTRUCTOR HERE**//
-    LinkedList L;
+    
+    HashTableLinear h(40009);
+
 
     int position = 0;
     while (position <400){
@@ -63,7 +65,7 @@ int main(int argc, char const *argv[]) {
             std::chrono::high_resolution_clock::time_point startInsert = std::chrono::high_resolution_clock::now(); //start timer
             
             //**PUT INSERT FUNCTION HERE**
-            L.insert(dataSet[i]);
+            h.insertItem(dataSet[i]);
             
             std::chrono::high_resolution_clock::time_point endInsert = std::chrono::high_resolution_clock::now(); //stop timer
             std::chrono::duration<double, std::milli> timeTakenInsert = endInsert - startInsert;//Timery Maths stuff
@@ -71,7 +73,6 @@ int main(int argc, char const *argv[]) {
             insertSum = insertSum + timeTakenInsert.count();
         }
         insertTime[position] = insertSum/100;
-
 
         //CONFIRMED GOOD
         /* SEARCH TIMER */
@@ -85,7 +86,7 @@ int main(int argc, char const *argv[]) {
 
             std::chrono::high_resolution_clock::time_point startSearch = std::chrono::high_resolution_clock::now(); //start timer
             //**PUT SEARCH FUNCTION HERE**//
-            L.search(toSearch);
+            h.searchItem(toSearch);
             
             std::chrono::high_resolution_clock::time_point endSearch = std::chrono::high_resolution_clock::now(); //stop timer
             std::chrono::duration<double, std::milli> timeTakenSearch = endSearch - startSearch;//Timery Maths stuff
@@ -94,7 +95,6 @@ int main(int argc, char const *argv[]) {
         }
         searchTime[position] = searchSum/100;
 
-
         //Increment for Loop
         position++;
     }
@@ -102,14 +102,15 @@ int main(int argc, char const *argv[]) {
 
     /*WRITE TO FILE*/
     ofstream insertOutput;
-    insertOutput.open("Results/insertResults.csv");
+    insertOutput.open("insertResults.csv");
     ofstream searchOutput;
-    searchOutput.open("Results/searchResults.csv");
+    searchOutput.open("searchResults.csv");
     for (int i = 0; i < 400; i++) {
         insertOutput << insertTime[i] << ",";
         searchOutput << searchTime[i] << ",";
     }
     insertOutput.close();
     searchOutput.close();
-    cout << "done";
+    cout << "\nInsertion results saved to insertResults.csv" << endl;
+    cout << "Search results saved to searchResults.csv" << endl << endl;
 }
