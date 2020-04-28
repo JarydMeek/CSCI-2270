@@ -6,6 +6,9 @@
 
 using namespace std;
 
+//Jaryd Meek
+//Created this header and implementation for the Hash Tables
+
 class HashTableLinear
 {
     int tableSize;  // No. of buckets (linked lists)

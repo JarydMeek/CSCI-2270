@@ -5,6 +5,7 @@
 
 //Include header files for all data structures and variants
 #include "LinkedList.hpp"
+#include "BST.hpp"
 #include "hashTableChaining.hpp"
 #include "hashTableLinear.hpp"
 #include "hashTableQuadratic.hpp"
@@ -104,6 +105,51 @@ void linkedListTest(int dataSet[], double insertTime[], double searchTime[]) {
 //runs insert 100x, then search 100x, averages those values and saves to array.
 //Jaryd
 void binarySearchTreeTest(int dataSet[], double insertTime[], double searchTime[]) {
+    BST tree;
+
+
+    int position = 0;
+    while (position <400){
+
+        /*INSERT TIMER*/
+        double insertTemp[100];
+        double insertSum = 0;
+        for (int i = position*100; i < (position+1)*100; i++) {
+            std::chrono::high_resolution_clock::time_point startInsert = std::chrono::high_resolution_clock::now(); //start timer
+            
+            //**PUT INSERT FUNCTION HERE**
+            tree.insert(dataSet[i]);
+            
+            std::chrono::high_resolution_clock::time_point endInsert = std::chrono::high_resolution_clock::now(); //stop timer
+            std::chrono::duration<double, std::milli> timeTakenInsert = endInsert - startInsert;//Timery Maths stuff
+            insertTemp[i%100] = timeTakenInsert.count();
+            insertSum = insertSum + timeTakenInsert.count();
+        }
+        insertTime[position] = insertSum/100;
+
+        /* SEARCH TIMER */
+        double searchTemp[100];
+        double searchSum = 0;
+        int randIndex = 0;
+        for (int i = 0; i < 100; i++) {
+            randIndex = rand()%((position+1)*100);
+            int toSearch = dataSet[randIndex];
+
+
+            std::chrono::high_resolution_clock::time_point startSearch = std::chrono::high_resolution_clock::now(); //start timer
+            //**PUT SEARCH FUNCTION HERE**//
+            tree.search(toSearch);
+            
+            std::chrono::high_resolution_clock::time_point endSearch = std::chrono::high_resolution_clock::now(); //stop timer
+            std::chrono::duration<double, std::milli> timeTakenSearch = endSearch - startSearch;//Timery Maths stuff
+            searchTemp[i] = timeTakenSearch.count();
+            searchSum = searchSum + timeTakenSearch.count();
+        }
+        searchTime[position] = searchSum/100;
+
+        //Increment for Loop
+        position++;
+    }
 }
 
 //Timer Function - Completes the timing operation for hash tables with chaining collision resolution.

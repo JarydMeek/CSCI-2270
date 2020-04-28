@@ -2,6 +2,9 @@
 #define LINKEDLIST_H
 
 
+//Collin Graham
+//Created this header and implementation for the Linked List
+
 //Node Struct that will be stored in the linked list object 
 struct Node
 {

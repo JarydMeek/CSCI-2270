@@ -3,6 +3,8 @@
 
 #include <string>
 
+//Jaryd Meek
+//Created this header and implementation for the Hash Tables
 
 using namespace std;
 

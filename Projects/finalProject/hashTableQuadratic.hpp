@@ -6,6 +6,8 @@
 
 using namespace std;
 
+//Jaryd Meek
+//Created this header and implementation for the Hash Tables
 
 class HashTableQuadratic
 {

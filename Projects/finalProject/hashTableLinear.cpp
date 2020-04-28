@@ -22,7 +22,6 @@ using namespace std;
         //Create new node with new value
         node * newNode = new node;
         newNode -> key = key;
-        newNode -> next = nullptr;
         //loop through attempts to add new node until node gets added
         bool added = false;
         while(!added){
