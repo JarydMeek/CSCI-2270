@@ -320,6 +320,9 @@ void hashTableQuadratic(int dataSet[], double insertTime[], double searchTime[],
     }
 }
 
+//Main function
+//Handles menu system and calling the above functions, as well as file output.
+//Jaryd
 int main() {
     //Initialize storage arrays (sizes given in writup)
     int dataSet[400000];

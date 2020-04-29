@@ -1,6 +1,7 @@
 #include "BST.hpp"
 #include <iostream>
 
+using namespace std;
 
 /* Purpose: Create the Linked List object
  * Parameters: None

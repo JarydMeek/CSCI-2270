@@ -1,8 +1,6 @@
 #ifndef BST_H
 #define BST_H
 
-using namespace std;
-
 
 //Collin Graham
 //Created this header and implementation for the BST

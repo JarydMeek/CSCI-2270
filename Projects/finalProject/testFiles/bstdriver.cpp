@@ -1,4 +1,4 @@
-#include "BST.hpp"
+#include "../BST.hpp"
 #include <iostream>
 
 using namespace std;
@@ -15,7 +15,7 @@ int main()
 
     b.display(b.getRoot(), 1);
 
-    Node* Temp = b.search(0);
+    NodeBST* Temp = b.search(0);
     cout << "Found: " << Temp->key << endl;
     Temp = b.search(10);
     //cout << "Found: " << Temp->key << endl;
