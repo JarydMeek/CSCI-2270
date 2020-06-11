@@ -63,9 +63,13 @@ using namespace std;
         }
     }
 
-    //Just a getter for number of collisions 
-    int HashTableChain::getNumOfCollision(){
+    //Just a getter for number of collisions on insert
+    int HashTableChain::getNumOfCollisionInsert(){
         return numOfcolision;
+    }
+    //Just a getter for number of collisions on search
+    int HashTableChain::getNumOfCollisionSearch(){
+        return numOfcolisionSearch;
     }
 
     //Search function for node that matches key
@@ -76,6 +80,7 @@ using namespace std;
         //work through LL at index to find matching node
         node * current = table[hashResult];
         while (current ->key != key) {
+            numOfcolisionSearch++;
             current = current -> next;
 
             //reached end of list and didn't find matching node

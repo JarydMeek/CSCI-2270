@@ -67,9 +67,15 @@ using namespace std;
     }
 
     //Just a getter for number of collisions
-    int HashTableLinear::getNumOfCollision(){
+    int HashTableLinear::getNumOfCollisionInsert(){
         return numOfcolision;
     }
+
+    //Just a getter for number of collisions on search
+    int HashTableLinear::getNumOfCollisionSearch(){
+        return numOfcolisionSearch;
+    }
+
 
     //Search function for node that matches key
     //First, hashes key, then checks each node starting at the hash result until it either finds the correct node, or reachings starting point again
@@ -83,6 +89,7 @@ using namespace std;
        while (current ->key != key) {
            //we aren't at the right node, go to next node
             hashResult++;
+            numOfcolisionSearch++;
             //we've gone through the entire array, and can't find the node, output message and return nullptr
             if (originalHash == hashResult) {
                 cout << "Couldn't Find Node" << endl;
@@ -95,6 +102,7 @@ using namespace std;
             current = table[hashResult];
             //if the current index is empty, skip it (and any other index that is empty)
             while(current == nullptr){
+                numOfcolisionSearch++;
                 hashResult++;
                 current = table[hashResult];
             }

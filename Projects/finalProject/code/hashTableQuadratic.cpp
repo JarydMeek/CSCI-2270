@@ -78,8 +78,12 @@ using namespace std;
     }
 
     //Just a getter for number of collisions
-    int HashTableQuadratic::getNumOfCollision(){
+    int HashTableQuadratic::getNumOfCollisionInsert(){
         return numOfcolision;
+    }
+    //Just a getter for number of collisions on search
+    int HashTableQuadratic::getNumOfCollisionSearch(){
+        return numOfcolisionSearch;
     }
 
     //Search function for node that matches key
@@ -96,6 +100,7 @@ using namespace std;
        while (current ->key != key) {
            //we couldn't find the correct value, setup new index
             index = originalHash + (counter*counter);
+            numOfcolisionSearch++;
             //index would go over the size of the array, move to beginning of array
             //NOTE - chose to move to remainder at beginning of array, not 0
             if (index >= tableSize) {

@@ -155,8 +155,8 @@ void binarySearchTreeTest(int dataSet[], double insertTime[], double searchTime[
 //Timer Function - Completes the timing operation for hash tables with chaining collision resolution.
 //runs insert 100x, then search 100x, averages those values and saves to array.
 //Jaryd
-void hashTableChaining(int dataSet[], double insertTime[], double searchTime[], int collisionTracker[]) {
-    HashTableLinear hashTable(40009);
+void hashTableChaining(int dataSet[], double insertTime[], double searchTime[], int collisionTrackerInsert[], int collisionTrackerSearch[]) {
+    HashTableChain hashTable(40009);
 
 
     int position = 0;
@@ -201,7 +201,8 @@ void hashTableChaining(int dataSet[], double insertTime[], double searchTime[], 
 
         //Tracks the number of collisions per 100 insertions
         if (position > 0){
-            collisionTracker[position] = (hashTable.getNumOfCollision() - collisionTracker[position-1]);
+            collisionTrackerInsert[position] = (hashTable.getNumOfCollisionInsert() - collisionTrackerInsert[position-1]);
+            collisionTrackerSearch[position] = (hashTable.getNumOfCollisionSearch() - collisionTrackerSearch[position-1]);
         }
 
         //Increment for Loop
@@ -212,7 +213,7 @@ void hashTableChaining(int dataSet[], double insertTime[], double searchTime[], 
 //Timer Function - Completes the timing operation for hash tables with linear probing collision resolution
 //runs insert 100x, then search 100x, averages those values and saves to array.
 //Jaryd
-void hashTableLinear(int dataSet[], double insertTime[], double searchTime[], int collisionTracker[]) {
+void hashTableLinear(int dataSet[], double insertTime[], double searchTime[], int collisionTrackerInsert[], int collisionTrackerSearch[]) {
     HashTableLinear hashTable(40009);
     
     int position = 0;
@@ -256,7 +257,8 @@ void hashTableLinear(int dataSet[], double insertTime[], double searchTime[], in
 
         //Tracks the number of collisions per 100 insertions
         if (position > 0){
-            collisionTracker[position] = (hashTable.getNumOfCollision() - collisionTracker[position-1]);
+            collisionTrackerInsert[position] = (hashTable.getNumOfCollisionInsert() - collisionTrackerInsert[position-1]);
+            collisionTrackerSearch[position] = (hashTable.getNumOfCollisionSearch() - collisionTrackerSearch[position-1]);
         }
 
         //Increment for Loop
@@ -268,7 +270,7 @@ void hashTableLinear(int dataSet[], double insertTime[], double searchTime[], in
 //Timer Function - Completes the timing operation for hash tables with quadratic probing collision resolution
 //runs insert 100x, then search 100x, averages those values and saves to array.
 //Jaryd
-void hashTableQuadratic(int dataSet[], double insertTime[], double searchTime[], int collisionTracker[]) {
+void hashTableQuadratic(int dataSet[], double insertTime[], double searchTime[], int collisionTrackerInsert[], int collisionTrackerSearch[]) {
     HashTableQuadratic hashTable(40009);
     
     int position = 0;
@@ -312,7 +314,8 @@ void hashTableQuadratic(int dataSet[], double insertTime[], double searchTime[],
 
         //Tracks the number of collisions per 100 insertions
         if (position > 0){
-            collisionTracker[position] = (hashTable.getNumOfCollision() - collisionTracker[position-1]);
+            collisionTrackerInsert[position] = (hashTable.getNumOfCollisionInsert() - collisionTrackerInsert[position-1]);
+            collisionTrackerSearch[position] = (hashTable.getNumOfCollisionSearch() - collisionTrackerSearch[position-1]);
         }
 
         //Increment for Loop
@@ -328,7 +331,8 @@ int main() {
     int dataSet[400000];
     double insertTime[400];
     double searchTime[400];
-    int collisionTracker[400];
+    int collisionTrackerInsert[400];
+    int collisionTrackerSearch[400];
 
     //While loop to allow the user to run other tests
     bool repeat = true;
@@ -381,15 +385,15 @@ int main() {
             case 2 : binarySearchTreeTest(dataSet, insertTime, searchTime);
                     fileNameOutput = fileNameOutput + "binarySearchTree-";//for output file naming
                     break;
-            case 3 : hashTableChaining(dataSet, insertTime, searchTime, collisionTracker);
+            case 3 : hashTableChaining(dataSet, insertTime, searchTime, collisionTrackerInsert, collisionTrackerSearch);
                     runHashTable = true;
                     fileNameOutput = fileNameOutput + "hashTableChaining-";//for output file naming
                     break;
-            case 4 : hashTableLinear(dataSet, insertTime, searchTime, collisionTracker);
+            case 4 : hashTableLinear(dataSet, insertTime, searchTime, collisionTrackerInsert, collisionTrackerSearch);
                     runHashTable = true;
                     fileNameOutput = fileNameOutput + "hashTableLinear-";//for output file naming
                     break;
-            case 5 : hashTableQuadratic(dataSet, insertTime, searchTime, collisionTracker);
+            case 5 : hashTableQuadratic(dataSet, insertTime, searchTime, collisionTrackerInsert, collisionTrackerSearch);
                     runHashTable = true;
                     fileNameOutput = fileNameOutput + "hashTableQuadratic-";//for output file naming
                     break;
@@ -412,13 +416,18 @@ int main() {
 
         //Handles file output of collision tracker (IF APPLICABLE)
         if(runHashTable) {
-            ofstream collisionOutput;
-            collisionOutput.open(fileNameOutput+"collisionResults.csv");
+            ofstream collisionOutputInsert;
+            ofstream collisionOutputSearch;
+            collisionOutputInsert.open(fileNameOutput+"collisionResultsInsert.csv");
+            collisionOutputSearch.open(fileNameOutput+"collisionResultsSearch.csv");
             for (int i = 0; i < 400; i++) {
-                collisionOutput << collisionTracker[i] << ",";
+                collisionOutputInsert << collisionTrackerInsert[i] << ",";
+                collisionOutputSearch << collisionTrackerSearch[i] << ",";
             }
-            collisionOutput.close();
-            cout << "Collision results saved to "<< fileNameOutput << "collisionResults.csv" << endl;
+            collisionOutputInsert.close();
+            collisionOutputSearch.close();
+            cout << "Collision on Insert results saved to "<< fileNameOutput << "collisionResultsInsert.csv" << endl;
+            cout << "Collision on Search results saved to "<< fileNameOutput << "collisionResultsSearch.csv" << endl;
         }
         
         cout << endl;
