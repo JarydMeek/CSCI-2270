@@ -5,4 +5,4 @@ This contains all work completed for CSCI 2270 at the University of Colorado at 
 # Course Description - 
 Studies data abstractions (e.g., stacks, queues, lists, trees, graphs) and their representation techniques (e.g., linking, arrays). Introduces concepts used in algorithm design and analysis including criteria for selecting data structures to fit their applications.
 
-Final Grade - 
+Final Grade - A (Percentage is hidden for this class)
